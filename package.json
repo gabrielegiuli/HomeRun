@@ -1,0 +1,20 @@
+{
+  "name": "homerun",
+  "version": "1.0.0",
+  "description": "retFUL APIs for controlling basic I/Os",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "API"
+  ],
+  "author": "G.J. Giuli",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "mqtt": "^4.3.7"
+  }
+}

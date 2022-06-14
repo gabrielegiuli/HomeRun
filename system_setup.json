@@ -1,0 +1,14 @@
+{
+    "devices": [
+        {
+            "type": "output",
+            "id": "home_001",
+            "address": ""
+        },
+        {
+            "type": "output",
+            "id": "home_002",
+            "address": ""
+        }
+    ]
+}
