@@ -1,21 +1,24 @@
-const config = require('./config.js')
+// Load configuration files
+const config = require('./config.json')
 const system_setup = require('./system_setup.json')
 
-const parse = require('./parse.js')
-
+// Load modules
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+// Create app
 const app = express()
 
-// Create data structure
-var outputs = parse(system_setup)
-
-// Configuring middlewares
+// Configure cors
 app.use(cors())
+
+// Configure body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Load outputs
+var outputs = system_setup.outputs
 
 app.get('/devices', (req, res) => {
     res.json(outputs)
@@ -27,7 +30,7 @@ app.post('/set_state', (req, res) => {
 
     outputs[id].state = state
 
-    res.sendStatus(202)
+    res.sendStatus(200)
 })
 
 app.listen(config.server_port, () => {

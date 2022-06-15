@@ -2,7 +2,7 @@
   "name": "homerun",
   "version": "1.0.0",
   "description": "retFUL APIs for controlling basic I/Os",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
