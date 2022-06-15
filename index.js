@@ -35,8 +35,9 @@ app.post('/set_state', (req, res) => {
 
 app.post('/add_device', (req, res) => {
     const id = req.body.id
-    
     outputs[id] = {state: 0}
+
+
 
     res.sendStatus(200)
 })
@@ -44,3 +45,5 @@ app.post('/add_device', (req, res) => {
 app.listen(config.server_port, () => {
     console.log(`Server started on http://localhost:${config.server_port}`)
 })
+
+console.log('test')
