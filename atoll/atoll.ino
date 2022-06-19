@@ -1,13 +1,15 @@
 #include <ArduinoMqttClient.h>
 #include <WiFiNINA.h>
 
-char ssid[] = "";
-char pass[] = "";
+#include "credentials.h"
+
+char ssid[] = SECRET_SSID;
+char pass[] = SECRET_PASS;
 
 WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 
-const char broker[] = "test.mosquitto.org";
+const char broker[] = "mqtt://raspberrypi.local";
 const int  port     = 1883;
 const char topic[]  = "homerun/general";
 
@@ -24,6 +26,7 @@ void setup() {
     delay(5000);  
   }
 
+  Serial.println();
   Serial.print("Attempting to connect to the MQTT broker: ");
   Serial.println(broker);
 
@@ -35,6 +38,7 @@ void setup() {
   mqttClient.onMessage(onMqttMessage);
   mqttClient.subscribe(topic);
 
+  Serial.println();
   Serial.println("Connected to MQTT broker");
   Serial.println();
   
