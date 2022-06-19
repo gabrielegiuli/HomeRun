@@ -49,6 +49,6 @@ class bridge {
 
 }
 
-module.exports = function(brokerUrl) {
-    return new bridge(brokerUrl)
+module.exports = function(brokerUrl, topicName) {
+    return new bridge(brokerUrl, topicName)
 }

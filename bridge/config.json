@@ -2,7 +2,7 @@
     "server_port": 8080,
     "sys_version": "1.0",
     "broker": {
-        "url": "mqtt://localhost",
+        "url": "mqtt://localhost:1883",
         "topic": "homerun"
     }
 }
