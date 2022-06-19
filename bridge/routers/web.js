@@ -2,9 +2,10 @@ const express = require('express')
 const path = require('path')
 
 const router = express.Router()
+router.use(express.static(path.join(__dirname, '../web/homerun-web/build')))
 
 router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../web/index.html'))
+    res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
 module.exports = router
