@@ -13,7 +13,10 @@ MqttClient mqttClient(wifiClient);
 
 const char broker[] = "192.168.1.75";
 const int  port     = 1883;
-const char topic[]  = "homerun/general";
+const char topic[]  = "homerun/atoll_update";
+
+unsigned long int previousMillis = 0;
+unsigned long int currentMillis = 0;
 
 void setup() {
 
@@ -48,6 +51,21 @@ void setup() {
 
 void loop() {
   mqttClient.poll();
+
+  currentMillis = millis();
+  
+  if (currentMillis - previousMillis > 5000) {
+    previousMillis = millis();
+
+    mqttClient.beginMessage("homerun/atoll_update");
+    mqttClient.println("{");
+    mqttClient.print("  \"name\": \"");
+    mqttClient.print(id);
+    mqttClient.println("\"");
+    mqttClient.println("}");
+    mqttClient.endMessage();
+  }
+  
   delayMicroseconds(500);
 }
 
@@ -65,6 +83,4 @@ void onMqttMessage(int messageSize) {
   }
 
   Serial.println(incomingData);
-
-  
 }

@@ -16,8 +16,11 @@ class bridge {
             console.log(`MQTT bridge connected to ${this.brokerUrl}`)
         })
 
-        this.client.subscribe(`${this.topicName}/device_update`)
-        this.client.on('message', this.handleMessage)
+        this.client.subscribe(`${this.topicName}/#`)
+        this.client.on('message', (topic, message) => {
+            this.handleMessage(topic, message)
+        })
+
     }
 
     handleMessage(topic, message) {
@@ -34,17 +37,18 @@ class bridge {
 
     atollUpdate(data) {
         
-        newAtoll = JSON.parse(data)
-        this.atolls(newAtoll.name) = {
+        const newAtoll = JSON.parse(data)
+
+        this.atolls[newAtoll.name] = {
             outputs: newAtoll.outputs,
-            inputs: newDevnewAtollice.inputs
+            inputs: newAtoll.inputs
         }
 
         console.log('New device added to the list')
     }
 
     createNewOutput() {
-
+        console.log("poop")
     }
 
 }
