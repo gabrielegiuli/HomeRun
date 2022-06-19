@@ -15,6 +15,11 @@ app.get('/atolls_list', (req, res) => {
     res.json(mqtt.atolls)
 })
 
+app.post('/set_output', (req, res) => {
+    mqtt.setOutput(req.body.deviceId, req.body.outputId, req.body.state)
+    res.sendStatus(200)
+})
+
 app.listen(config.server_port, () => {
     console.log(`API server started on http://localhost:${config.server_port}`)
 })

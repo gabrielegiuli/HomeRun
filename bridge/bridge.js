@@ -35,20 +35,41 @@ class bridge {
         }
     }
 
+    // Update atoll list from atolls mqtt data
     atollUpdate(data) {
         
-        const newAtoll = JSON.parse(data)
+        try {
+            const newAtoll = JSON.parse(data)
 
-        this.atolls[newAtoll.name] = {
-            outputs: newAtoll.outputs,
-            inputs: newAtoll.inputs
+            this.atolls[newAtoll.name] = {
+                outputs: newAtoll.outputs,
+                inputs: newAtoll.inputs
+            }
+        } catch (error) {
+            console.error(error)
         }
 
-        console.log('New device added to the list')
     }
 
-    createNewOutput() {
-        console.log("poop")
+    // Send status update to atoll
+    setOutput(deviceId, outputId, state) {
+        
+        if (!deviceId in this.atolls) {
+            console.error(`Atoll ${deviceId} is not connected`)
+            return;
+        }
+
+        const atoll = this.atolls[deviceId]
+
+        if (!outputId in atoll) {
+            console.error(`Output ${deviceId} is not available`)
+            return
+        }
+
+        this.client.publish(`${this.topicName}/${deviceId}`, JSON.stringify({
+            "outputId": outputId,
+            "state": state
+        }))
     }
 
 }

@@ -1,3 +1,4 @@
+#include <ArduinoJson.h>
 #include <ArduinoMqttClient.h>
 #include <WiFiNINA.h>
 
@@ -6,14 +7,13 @@
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 
-char id[] = CLIENT_ID;
-
 WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 
 const char broker[] = "192.168.1.75";
 const int  port     = 1883;
-const char topic[]  = "homerun/atoll_update";
+const char topic[]  = "homerun/ATOLL001";
+const char id[]     = "ATOLL001";
 
 unsigned long int previousMillis = 0;
 unsigned long int currentMillis = 0;
@@ -46,6 +46,10 @@ void setup() {
 
   Serial.println("Connected to MQTT broker");
   Serial.println();
+
+  for (int i = 1; i <= 13; i++) {
+    pinMode(i, OUTPUT);  
+  }
   
 }
 
@@ -61,12 +65,29 @@ void loop() {
     mqttClient.println("{");
     mqttClient.print("  \"name\": \"");
     mqttClient.print(id);
-    mqttClient.println("\"");
+    mqttClient.println("\",");
+    printOutputs();
     mqttClient.println("}");
     mqttClient.endMessage();
   }
   
   delayMicroseconds(500);
+}
+
+void printOutputs() {
+  mqttClient.println("\"outputs\": {");
+  for(int i = 1; i <= 13; i++) {
+    mqttClient.print("\"");
+    mqttClient.print(i);
+    mqttClient.print("\": \"");
+    mqttClient.print(digitalRead(i));  
+    if (i != 13) {
+      mqttClient.println("\",");
+    } else {
+      mqttClient.println("\"");
+    }
+  }
+  mqttClient.println("}");
 }
 
 void onMqttMessage(int messageSize) {
@@ -83,4 +104,14 @@ void onMqttMessage(int messageSize) {
   }
 
   Serial.println(incomingData);
+
+  DynamicJsonDocument doc(1024);
+  deserializeJson(doc, incomingData);
+  JsonObject obj = doc.as<JsonObject>();
+
+  int portId = obj["outputId"];
+  int state = obj["state"];
+
+  digitalWrite(portId, state);
+  
 }
