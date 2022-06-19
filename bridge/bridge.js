@@ -25,14 +25,14 @@ class bridge {
         console.log(`${topic}: ${message}`)
 
         switch (topic) {
-            case `${this.topicName}/device_update`:
-                this.addAtoll(message)
+            case `${this.topicName}/atoll_update`:
+                this.atollUpdate(message)
             default:
                 console.log('unkown topic')
         }
     }
 
-    addAtoll(data) {
+    atollUpdate(data) {
         
         newAtoll = JSON.parse(data)
         this.atolls(newAtoll.name) = {

@@ -6,17 +6,21 @@
 char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 
+char id[] = CLIENT_ID;
+
 WiFiClient wifiClient;
 MqttClient mqttClient(wifiClient);
 
-const char broker[] = "mqtt://raspberrypi.local";
+const char broker[] = "192.168.1.75";
 const int  port     = 1883;
 const char topic[]  = "homerun/general";
 
 void setup() {
 
   Serial.begin(9600);
-  delay(500);
+  while(!Serial) {
+    delay(1);  
+  }
 
   Serial.print("Attempting to connect to WPA SSID: ");
   Serial.println(ssid);
@@ -26,7 +30,6 @@ void setup() {
     delay(5000);  
   }
 
-  Serial.println();
   Serial.print("Attempting to connect to the MQTT broker: ");
   Serial.println(broker);
 
@@ -38,7 +41,6 @@ void setup() {
   mqttClient.onMessage(onMqttMessage);
   mqttClient.subscribe(topic);
 
-  Serial.println();
   Serial.println("Connected to MQTT broker");
   Serial.println();
   
@@ -56,9 +58,13 @@ void onMqttMessage(int messageSize) {
   Serial.print(messageSize);
   Serial.print("]: ");
 
+  String incomingData = "";
+
   while(mqttClient.available()) {
-    Serial.print((char)mqttClient.read());  
+    incomingData += (char)mqttClient.read();  
   }
 
-  Serial.println();
+  Serial.println(incomingData);
+
+  
 }
